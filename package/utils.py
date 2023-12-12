@@ -21,7 +21,9 @@ def read_csvdata(path,mode='Train'):
                 row_dict['label'].append(line.split(' ')[1])
             else:
                 assert len(row_dict['char']) == len(row_dict['label']) , "char 與 label 長度不一"
-                data = data.append({'sentence':row_dict['char'],
+                # data = data.append({'sentence':row_dict['char'],
+                                    # 'label':row_dict['label']},ignore_index=True)
+                data = data._append({'sentence':row_dict['char'],
                                     'label':row_dict['label']},ignore_index=True)
                 row_dict['char'],row_dict['label'] = list(),list()
 
