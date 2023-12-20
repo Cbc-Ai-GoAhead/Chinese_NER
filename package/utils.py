@@ -19,6 +19,8 @@ def read_csvdata(path,mode='Train'):
             if line != '' and line != ' ':
                 row_dict['char'].append(line.split(' ')[0])
                 row_dict['label'].append(line.split(' ')[1])
+                # row_dict['char']._append(line.split(' ')[0])
+                # row_dict['label']._append(line.split(' ')[1])
             else:
                 assert len(row_dict['char']) == len(row_dict['label']) , "char 與 label 長度不一"
                 # data = data.append({'sentence':row_dict['char'],
@@ -38,7 +40,7 @@ def read_csvdata(path,mode='Train'):
             if line != '' and line != ' ':
                 row_dict['char'].append(line.split(' ')[0])
             else:
-                data = data.append({'sentence':row_dict['char']},ignore_index=True)
+                data = data._append({'sentence':row_dict['char']},ignore_index=True)
                 row_dict['char'] = list()
     
     return data

@@ -156,7 +156,7 @@ if mode == 'Train':
                 input, mask, label = [_.to(device) for _ in (input,mask,label)]
                 
                 val_loss = model(input,mask,label)
-                writer.add_scalar('Loss/val', y_pred.item(), i)
+                writer.add_scalar('Loss/val', val_loss.item(), i)
                 y_pred = model.loss(input,mask)# crf predict result
                 #抓模型預測label
                 y_pred = decode_tags_from_ids(y_pred,dataset_eval.id2tag)
@@ -189,7 +189,7 @@ if mode == 'Train':
             writer.add_scalar('Precision/val', prec, epoch)
             if f1 > best_f1:
                 best_f1 = f1
-                model_arg_file_name = str(epoch)+"_"+str(best_f1[:5])+"_"+args['save_model_name']
+                model_arg_file_name = str(epoch)+"_"+format(best_f1,'.3f')+"_"+args['save_model_name']
                 save_model_name = os.path.join(model_path,model_arg_file_name)
                 torch.save(model.state_dict(), save_model_name)
     writer.close()
@@ -203,7 +203,8 @@ if mode == 'Train':
 elif mode == 'Test':
 
     #load model name
-    load_model_path = os.path.join('saved_model',args['load_model_name'],args['load_model_name']+'.pt')
+    #load_model_path = os.path.join('saved_model',args['load_model_name'],args['load_model_name']+'.pt')
+    load_model_path = args['load_model_name']#,args['load_model_name']+'.pt')
 
     #pred txt name
     Pred_save_path = os.path.join( 'Predict' ,args['predict_name'])
@@ -218,7 +219,7 @@ elif mode == 'Test':
     print(f"testing data size : {dataset_test.__len__()} \n")
 
     #Load PreTrain Model
-    model = BiLSTM_CRF(len(dataset_test.id2tag),lstm_hidden_dim=lstm_hidden_dim, lstm_dropout_rate=lstm_dropout_rate).to(device)
+    model = BiLSTM_CRF_01_dropout(len(dataset_test.id2tag),lstm_hidden_dim=lstm_hidden_dim, lstm_dropout_rate=lstm_dropout_rate).to(device)
     model.load_state_dict(torch.load(load_model_path))      
     #Test
     model.eval()

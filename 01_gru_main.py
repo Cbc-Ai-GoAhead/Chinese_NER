@@ -116,7 +116,7 @@ if mode == 'Train':
     optimizer = Adam(filter(lambda p: p.requires_grad, model.parameters()), lr=lr)
     now = datetime.datetime.now().strftime("%H:%M:%S")
     path = os.path.join('./tensorboard_logs', args['save_model_name'].split('.pt')[0]+"_"+now)
-    writer = SummaryWriter(log_dir="./tensorboard_logs")
+    writer = SummaryWriter(log_dir=path)
     best_f1 = 0.0
     for epoch in range(EPOCH):
         print(f"\nEpoch: {epoch}=====================================================================================")
@@ -189,7 +189,7 @@ if mode == 'Train':
             writer.add_scalar('Precision/val', prec, epoch)
             if f1 > best_f1:
                 best_f1 = f1
-                model_arg_file_name = str(epoch)+"_"+str(best_f1[:5])+"_"+args['save_model_name']
+                model_arg_file_name = str(epoch)+"_"+format(best_f1,'.3f')+"_"+args['save_model_name']
                 save_model_name = os.path.join(model_path,model_arg_file_name)
                 torch.save(model.state_dict(), save_model_name)
     writer.close()
@@ -203,7 +203,8 @@ if mode == 'Train':
 elif mode == 'Test':
 
     #load model name
-    load_model_path = os.path.join('saved_model',args['load_model_name'],args['load_model_name']+'.pt')
+    #load_model_path = os.path.join('saved_model',args['load_model_name'],args['load_model_name']+'.pt')
+    load_model_path = args['load_model_name']#,args['load_model_name']+'.pt')
 
     #pred txt name
     Pred_save_path = os.path.join( 'Predict' ,args['predict_name'])
@@ -218,7 +219,7 @@ elif mode == 'Test':
     print(f"testing data size : {dataset_test.__len__()} \n")
 
     #Load PreTrain Model
-    model = BiLSTM_CRF(len(dataset_test.id2tag),lstm_hidden_dim=lstm_hidden_dim, lstm_dropout_rate=lstm_dropout_rate).to(device)
+    model = GRU_CRF(len(dataset_test.id2tag),lstm_hidden_dim=lstm_hidden_dim, lstm_dropout_rate=lstm_dropout_rate).to(device)
     model.load_state_dict(torch.load(load_model_path))      
     #Test
     model.eval()

@@ -146,11 +146,15 @@ python main.py --mode Train --save_model_name tutorial.pt  --Epoch 1 --gpu 0
 ### Test
 ```
 python main.py --mode Test --load_model_name tutorial --predict_name predict.txt --gpu 0
+python main.py --mode Test --load_model_name tutorial_baseline --predict_name predict.txt --gpu 1
 ```
 ## Steps 5 Evaluation
 先執行turn_to_eval.py，會產生eval.txt，再接續執行conlleval.py，即可得結果score.txt
 ```
 python turn_to_eval.py --truth truth.txt --prediction predict.txt 
-python conlleval.py < eval.txt 
+python conlleval.py < eval.txt
+
+python turn_to_eval.py --prediction ../Predict/predict.txt --output eval_baseline.txt
+python conlleval.py <  eval_baseline.txt
 
 ```

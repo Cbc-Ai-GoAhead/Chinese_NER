@@ -228,7 +228,9 @@ def get_result(correct_chunks, true_chunks, pred_chunks,
 
 def evaluate(true_seqs, pred_seqs, verbose=True,file_name='.'):
     #setting save path
+    print("file_name={}".format(file_name))
     file_name = os.path.join(file_name,'score.txt')
+    print("file_name={}".format(file_name))
     (correct_chunks, true_chunks, pred_chunks,
         correct_counts, true_counts, pred_counts) = count_chunks(true_seqs, pred_seqs)
     result = get_result(correct_chunks, true_chunks, pred_chunks,
@@ -237,7 +239,7 @@ def evaluate(true_seqs, pred_seqs, verbose=True,file_name='.'):
 
 def evaluate_conll_file(fileIterator):
     true_seqs, pred_seqs = [], []
-    
+    print(fileIterator)
     for line in fileIterator:
         
         cols = line.strip().split()
@@ -259,4 +261,5 @@ if __name__ == '__main__':
     """
     usage:     conlleval < file
     """
+    # print()
     evaluate_conll_file(sys.stdin)
