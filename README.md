@@ -140,12 +140,12 @@ python word2vec_train.py
 
 ### Train
 ```
-python main.py --mode Train --save_model_name tutorial.pt  --Epoch 1 --gpu 0
+CUDA_VISIBLE_DEVICES=3 python main.py --mode Train --save_model_name tutorial.pt  --Epoch 1 --gpu 0
 ```
 
 ### Test
 ```
-python main.py --mode Test --load_model_name tutorial --predict_name predict.txt --gpu 0
+CUDA_VISIBLE_DEVICES=3 python main.py --mode Test --load_model_name tutorial --predict_name predict.txt --gpu 0
 python main.py --mode Test --load_model_name tutorial_baseline --predict_name predict.txt --gpu 1
 ```
 ## Steps 5 Evaluation
